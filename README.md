@@ -4,9 +4,9 @@ _Este proyecto es una prueba para postular a Cencosud._
 ### Pre-requisitos 📋
 
 _Un sistema Unix/Linux como por ejemplo Ubuntu 18.04_
-La máquina Virtual de Java
-Apache Spark
-pyspark
+_La máquina Virtual de Java_
+_Apache Spark_
+_pyspark_
 
 ## Requerimientos 🚀
 
@@ -15,11 +15,17 @@ Se requiere leer un DataSet público de Kaggle llamado "NYS Retail Food Stores",
 ### Instalación 🔧
 
 Actualizar sistema:
-```sudo apt update```
+```
+    sudo apt update
+```
 Instalar JDK:
-```sudo apt install -y default-jdk```
+```
+    sudo apt install -y default-jdk
+```
 Instalar pip:
-```apt install python-pip```
+```
+    apt install python-pip
+```
 Instalar Spark:
 ```
     sudo apt install wget
@@ -32,18 +38,25 @@ Instalar Spark:
     cd /home/spark/spark
 ```
 Instalar pyspark:
-```pip install pyspark```
+```
+    pip install pyspark
+```
 
 ## Ejecutando las pruebas ⚙️
 
 Ir a la carpeta donde está el archivo Python (.py) y luego ejecutarlo
 ```
-  cd /home/francisco/Documentos/TestCencosud/PruebaCencosud/
-  python PruebaCencosud.py
- ```
+    cd /home/francisco/Documentos/TestCencosud/PruebaCencosud/
+    python PruebaCencosud.py
+```
+
+## Comentarios
+Al leer y procesar el DataSet "retail-food-stores.csv" tuve inconvenientes al momento de intentar leer/transformar el campo Location, como era un archivo CSV se cortaba el registro del JSON, solo mostrandome una parte y no el total.
+Intenté modificarlo arreglando el JSON, reemplazando los caracteres que lo hacían inválidos en el archivo ```/PruebaCencosud/csv/retail-food-stores_Fix.csv``` y no tuve buenos resultados. También haciendo que el separador del CSV sea un tabulador, como está actualmente en el archivo ```/PruebaCencosud/csv/retail-food-stores_Fix2.csv``` pero tampoco tuve buenos resultados.
+
 
 ## Construido con 🛠️
 
-Se utilizó terminal de Ubuntu, Spark y Visual Studio Code
+Para el desarrollo se utilizó terminal de Ubuntu, Spark y Visual Studio Code
 * [Spark](https://spark.apache.org/) - Framework de computación en clúster open-source
 * [VS Code](https://code.visualstudio.com/) - IDE para programar el PySpark
