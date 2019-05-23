@@ -3,10 +3,14 @@ _Este proyecto es una prueba para postular a Cencosud._
 
 ### Pre-requisitos 📋
 
-_Un sistema Unix/Linux como por ejemplo Ubuntu 18.04_
-_La máquina Virtual de Java_
-_Apache Spark_
-_pyspark_
+Un sistema Unix/Linux como por ejemplo Ubuntu 18.04.
+
+La máquina Virtual de Java.
+
+Apache Spark.
+
+pyspark.
+
 
 ## Requerimientos 🚀
 
