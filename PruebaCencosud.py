@@ -1,4 +1,5 @@
 from pyspark import SparkContext, SparkConf, SQLContext
+from pyspark.sql.functions import lit
 import json
 
 appName = 'Prueba Cencosud'
@@ -9,40 +10,54 @@ sc = SparkContext(conf=conf)
 sqlContext = SQLContext(sc)
 
 def run():
-    ##Primero se determina donde esta el archivo CSV, en este caso es en este path
-    pathCSV = "/home/francisco/Documentos/TestCencosud/PruebaCencosud/csv/retail-food-stores_Fix6.csv"
+    print("Comienzo del Ejercicio")
+
+    ##Path donde esta el archivo CSV a procesar, aca se puede poner la ruta donde el usuario tenga el archivo
+    pathCSV = "/home/francisco/Documentos/TestCencosud/PruebaCencosud/csv/retail-food-stores.csv"
 
     ##Se define la variable del DataFrame llamada df que contiene la lectura del CSV
-    ##Se intenta corregir el CSV modificandolo, aplicando separador por TAB para que al leer el campo Location no se corte el JSON
-    df = sqlContext.read.option("delimiter", "\\t").csv(pathCSV)
-    df.printSchema()
+    df = sqlContext.read.option("delimiter", ",").csv(pathCSV) ##\\t
+    ##df.printSchema()                  ##Despliega el schema del DataFrame
+    ##dfLocation.show()                 #Despliega el contenido del DataFrame
 
-    ##Se selecciona la columna Location (15) y se muestra su contenido
-    ##Location = df.select(df._c14)
-    ##Location.show()
-    df.registerTempTable("datos")
-    df14 = sqlContext.sql("SELECT _c14 AS Location FROM datos")
-    ##df14.show()
-    ##df14.coalesce(1).write.json("retail-food-stores.json")
+    ##Se obtiene el rdd del CSV para procesarlo
+    rdd = sc.textFile(pathCSV)
+
+    ##Se transforma el rdd reemplazando, separando y joineando los valores para establecer un JSON valido
+    rdd2=rdd.map(lambda x: x.replace("'", "\"").replace('""', '"').replace('False', '"false"').strip()) \
+            .map(lambda x: x.split(',')) \
+            .map(lambda x: ''.join(x[14:21])) \
+            .map(lambda x: x.replace('"{','{').replace('}"','}').replace('""','","').replace('} "', '} ,"').replace('" "', '", "'))
     
-    ##La columna Location
-    dfLocation = sqlContext.read.json(df14.na.replace('\"', '"').rdd)
-    dfLocation.show()
-    dfLocation.printSchema()
-    dfLocation.coalesce(1).write.json("retail-food-stores.json")
+    ##Se obtiene la columna Location como un JSON
+    dfLocation = sqlContext.read.json(rdd2)
+    ##dfLocation.printSchema()
+    ##dfLocation.show()
 
-    dfLatitude = sqlContext.read.json(df14.na.replace('\"', '"').rdd).select("latitude")
-    dfLatitude.show()
-
-    dfLongitude = sqlContext.read.json(df14.na.replace('\"', '"').rdd).select("longitude")
-    dfLongitude.show()
-    
     ##Escribe el resultado en un JSON para revisar
-    ##new_df.coalesce(1).write.json("retail-food-stores.json")
+    dfLocation.coalesce(1).write.format("json").mode("overwrite").save("retail-food-stores.json")
 
-    ##Borra la columna Location y escribir archivo resultado ORC
-    ##df.drop(df._c14).coalesce(1).write.format("orc").mode("overwrite").save("retail-food-stores.orc")
+    ##Se obtiene campo latitude del JSON
+    dfLatitude = dfLocation.select("latitude")
+    ##dfLatitude.printSchema()
+    ##dfLatitude.show()
 
+    ##Se obtiene campo longitude del JSON
+    dfLongitude = dfLocation.select("longitude")
+    ##dfLongitude.printSchema()
+    ##dfLongitude.show()
+
+    ##Borra la columna Location y agrega latitude y longitude en el DataFrame
+    df = df.drop(df._c14)
+    df = df.withColumn("latitude", lit(dfLatitude["latitude"]))
+    ##df.printSchema()
+    df = df.withColumn("longitude", lit(dfLongitude["longitude"]))
+    ##df.printSchema()
+
+    ##Escribe el resultado en archivo ORC
+    df.coalesce(1).write.format("orc").mode("overwrite").save("retail-food-stores.orc")
+
+    print("Fin del Ejercicio")
 
 if __name__ == "__main__":
     run()
