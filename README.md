@@ -59,7 +59,7 @@ Al leer y procesar el DataSet "retail-food-stores.csv" tuve inconvenientes al mo
 Intenté modificarlo arreglando el JSON, reemplazando los caracteres que lo hacían inválidos en el archivo ```/PruebaCencosud/csv/retail-food-stores_Fix.csv``` y no tuve buenos resultados. También haciendo que el separador del CSV sea un tabulador, como está actualmente en el archivo ```/PruebaCencosud/csv/retail-food-stores_Fix2.csv``` pero tampoco tuve buenos resultados.
 Intente de 4 maneras distintas modificar el Location del CSV pero no me funcionó, me arroja un error al procesar el JSON.
 
-Desde Cencosud me avisaron que no siguiera con el "retail-food-stores.csv" y que trabajara con el ```clean_test.csv```, este efectivamente se proceso bien como JSON.
+Desde Cencosud me avisaron que no siguiera con el "retail-food-stores.csv" y que trabajara con un subconjunto del mismo llamado ```clean_test.csv```, este efectivamente se procesa bien como JSON.
 
 
 ## Construido con 🛠️
