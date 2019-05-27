@@ -16,12 +16,12 @@ def ejercicio():
     pathCSV = "/home/francisco/Documentos/TestCencosud/PruebaCencosud/csv/clean_test.csv"
 
     ##Se define la variable del DataFrame llamada df que contiene la lectura del CSV
-    df = sqlContext.read.option("delimiter", "|").option("header", "true").csv(pathCSV)
+    df = sqlContext.read.option("delimiter", "|").csv(pathCSV)
     
     ##Obtiene latitude y longitude como JSON y las agrega, Borra la columna Location
-    df = df.withColumn("latitude", get_json_object(df["Location"],"$.latitude"))
-    df = df.withColumn("longitude", get_json_object(df["Location"],"$.longitude"))
-    df = df.drop("Location")
+    df = df.withColumn("latitude", get_json_object(df["_c13"],"$.latitude").alias("latitude"))
+    df = df.withColumn("longitude", get_json_object(df["_c13"],"$.longitude").alias("longitude"))
+    df = df.drop("_c13")
 
     ##Escribe el resultado en archivo CSV y ORC
     df.coalesce(1).write.format("csv").mode("overwrite").save("resultado.csv")
