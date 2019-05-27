@@ -61,7 +61,7 @@ Intente de 4 maneras distintas modificar el Location del CSV pero no me funcion�
 
 Desde Cencosud me avisaron que no siguiera con el "retail-food-stores.csv" y que trabajara con un subconjunto del mismo llamado ```clean_test.csv```, este efectivamente se procesa bien como JSON.
 
-Los resultados del ejercicio se encuentran en los archivos ```/PruebaCencosud/resultado.csv``` y ```/PruebaCencosud/resultado.orc```
+Los resultados del ejercicio se encuentran en los archivos ```/PruebaCencosud/resultado.csv``` y ```/PruebaCencosud/resultado.orc``` los cuales fueron exitosos.
 
 
 ## Construido con 🛠️
